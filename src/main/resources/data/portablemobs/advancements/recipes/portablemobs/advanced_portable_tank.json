@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "portabletanks:advanced_portable_tank"
+    ]
+  },
+  "criteria": {
+    "has_basic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "portabletanks:basic_portable_tank"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "portabletanks:advanced_portable_tank"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_basic",
+      "has_the_recipe"
+    ]
+  ]
+}

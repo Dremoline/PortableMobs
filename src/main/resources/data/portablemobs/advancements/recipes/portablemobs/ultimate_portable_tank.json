@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "portabletanks:ultimate_portable_tank"
+    ]
+  },
+  "criteria": {
+    "has_expert": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "portabletanks:expert_portable_tank"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "portabletanks:ultimate_portable_tank"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_expert",
+      "has_the_recipe"
+    ]
+  ]
+}

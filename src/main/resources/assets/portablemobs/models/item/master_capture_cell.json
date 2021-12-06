@@ -1,0 +1,7 @@
+{
+  "parent": "portablemobs:item/capture_cell_template",
+  "textures": {
+    "sides": "portablemobs:item/master_capture_cell",
+    "top": "minecraft:block/obsidian"
+  }
+}
