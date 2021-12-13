@@ -59,7 +59,7 @@ public class PortableMobItem extends Item {
     public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity player, LivingEntity living, Hand hand) {
         CompoundNBT compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
-            if (living instanceof WitherEntity || living instanceof EnderDragonEntity) {
+            if (!PortableMobsConfig.captureBosses.get() && (living instanceof WitherEntity || living instanceof EnderDragonEntity)) {
                 if (player.level.isClientSide)
                     player.sendMessage(TextComponents.translation("portablemobs.capture_failed").color(TextFormatting.RED).get(), player.getUUID());
             } else {
