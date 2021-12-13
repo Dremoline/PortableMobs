@@ -1,6 +1,6 @@
 package com.dremoline.portablemobs;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 
 import java.util.Locale;

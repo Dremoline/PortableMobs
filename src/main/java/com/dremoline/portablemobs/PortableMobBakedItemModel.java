@@ -1,12 +1,12 @@
 package com.dremoline.portablemobs;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraftforge.client.model.BakedModelWrapper;
 
-public class PortableMobBakedItemModel extends BakedModelWrapper<IBakedModel> {
-    public PortableMobBakedItemModel(IBakedModel originalModel) {
+public class PortableMobBakedItemModel extends BakedModelWrapper<BakedModel> {
+    public PortableMobBakedItemModel(BakedModel originalModel) {
         super(originalModel);
     }
 
@@ -16,7 +16,7 @@ public class PortableMobBakedItemModel extends BakedModelWrapper<IBakedModel> {
     }
 
     @Override
-    public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
+    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
         super.handlePerspective(cameraTransformType, mat);
         return this;
     }

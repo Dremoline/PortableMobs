@@ -1,40 +1,54 @@
 package com.dremoline.portablemobs;
 
+import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.core.TextComponents;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.client.IItemRenderProperties;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class PortableMobItem extends Item {
     public final PortableMobTypes type;
 
     public PortableMobItem(PortableMobTypes type) {
-        super(new Item.Properties().stacksTo(1).tab(PortableMobs.GROUP).setISTER(() -> PortableMobItemStackRenderer::getInstance));
+        super(new Item.Properties().stacksTo(1).tab(PortableMobs.GROUP));
         this.type = type;
         this.setRegistryName(type.toSuffix() + "_capture_cell");
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
-        CompoundNBT compound = context.getItemInHand().getOrCreateTag();
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+                return new PortableMobItemStackRenderer(ClientUtils.getMinecraft().getBlockEntityRenderDispatcher());
+            }
+        });
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        CompoundTag compound = context.getItemInHand().getOrCreateTag();
         if (compound.getBoolean("has_entity")) {
             Optional<EntityType<?>> optional = EntityType.byString(compound.getString("entity_type"));
             if (optional.isPresent()) {
@@ -56,39 +70,39 @@ public class PortableMobItem extends Item {
     }
 
     @Override
-    public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity player, LivingEntity living, Hand hand) {
-        CompoundNBT compound = stack.getOrCreateTag();
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand hand) {
+        CompoundTag compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
-            if (!PortableMobsConfig.captureBosses.get() && (living instanceof WitherEntity || living instanceof EnderDragonEntity)) {
+            if (!PortableMobsConfig.captureBosses.get() && (living instanceof WitherBoss || living instanceof EnderDragon)) {
                 if (player.level.isClientSide)
-                    player.sendMessage(TextComponents.translation("portablemobs.capture_failed").color(TextFormatting.RED).get(), player.getUUID());
+                    player.sendMessage(TextComponents.translation("portablemobs.capture_failed").color(ChatFormatting.RED).get(), player.getUUID());
             } else {
                 if (living.isPassenger())
                     living.stopRiding();
                 living.ejectPassengers();
 
                 compound.putString("entity_type", living.getType().getRegistryName().toString());
-                compound.put("entity_data", living.saveWithoutId(new CompoundNBT()));
-                compound.putString("entity_name", ITextComponent.Serializer.toJson(TextComponents.entity(living).get()));
+                compound.put("entity_data", living.saveWithoutId(new CompoundTag()));
+                compound.putString("entity_name", Component.Serializer.toJson(TextComponents.entity(living).get()));
                 compound.putBoolean("has_entity", true);
-                living.remove();
+                living.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 
                 player.setItemInHand(hand, stack);
                 if (player.level.isClientSide) {
-                    player.sendMessage(TextComponents.translation("portablemobs.capture_success").color(TextFormatting.GREEN).get(), player.getUUID());
+                    player.sendMessage(TextComponents.translation("portablemobs.capture_success").color(ChatFormatting.GREEN).get(), player.getUUID());
                 }
-                return ActionResultType.sidedSuccess(player.level.isClientSide);
+                return InteractionResult.sidedSuccess(player.level.isClientSide);
             }
         }
         return super.interactLivingEntity(stack, player, living, hand);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> components, ITooltipFlag flag) {
-        CompoundNBT compound = stack.getOrCreateTag();
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> components, TooltipFlag flag) {
+        CompoundTag compound = stack.getOrCreateTag();
         if (compound.getBoolean("has_entity")) {
-            ITextComponent entityName = TextComponents.fromTextComponent(ITextComponent.Serializer.fromJson(compound.getString("entity_name"))).color(TextFormatting.YELLOW).get();
-            components.add(TextComponents.translation("portablemobs.tooltip_name", entityName).color(TextFormatting.WHITE).get());
+            Component entityName = TextComponents.fromTextComponent(Component.Serializer.fromJson(compound.getString("entity_name"))).color(ChatFormatting.YELLOW).get();
+            components.add(TextComponents.translation("portablemobs.tooltip_name", entityName).color(ChatFormatting.WHITE).get());
         }
     }
 }

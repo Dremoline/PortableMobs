@@ -1,10 +1,10 @@
 package com.dremoline.portablemobs;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod("portablemobs")
 public class PortableMobs {
 
-    public static final ItemGroup GROUP = new ItemGroup("portablemobs") {
+    public static final CreativeModeTab GROUP = new CreativeModeTab("portablemobs") {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(PortableMobTypes.BASIC.getItem());
@@ -36,7 +36,7 @@ public class PortableMobs {
         }
 
         @SubscribeEvent
-        public static void onRecipeRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> e){
+        public static void onRecipeRegistry(final RegistryEvent.Register<RecipeSerializer<?>> e){
             e.getRegistry().register(PortableMobUpgradeRecipe.SERIALIZER.setRegistryName(new ResourceLocation("portablemobs", "upgrade_capture_cell")));
         }
     }

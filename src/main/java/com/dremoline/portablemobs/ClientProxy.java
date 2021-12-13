@@ -1,8 +1,8 @@
 package com.dremoline.portablemobs;
 
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,7 +15,7 @@ public class ClientProxy {
     public static void onModelBake(ModelBakeEvent e) {
         for (PortableMobTypes type : PortableMobTypes.values()) {
             ResourceLocation location = new ModelResourceLocation("portablemobs:" + type.toSuffix() + "_capture_cell", "inventory");
-            IBakedModel model = e.getModelRegistry().get(location);
+            BakedModel model = e.getModelRegistry().get(location);
             if (model != null) {
                 e.getModelRegistry().put(location, new PortableMobBakedItemModel(model));
             }

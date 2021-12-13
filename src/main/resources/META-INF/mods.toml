@@ -48,7 +48,7 @@ description='''Portable Mobs adds an item to move mobs'''
 [[dependencies.portablemobs]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16,1.17)"
+    versionRange="[1.17,1.18)"
     ordering="NONE"
     side="BOTH"
 # Core Lib
