@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "portabletanks:basic_portable_tank"
+      "portablemobs:master_capture_cell"
     ]
   },
   "criteria": {
-    "has_iron": {
+    "has_item": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/iron"
+            "item": "portablemobs:basic_capture_cell"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "portabletanks:basic_portable_tank"
+        "recipe": "portablemobs:master_capture_cell"
       }
     }
   },
   "requirements": [
     [
-      "has_iron",
+      "has_item",
       "has_the_recipe"
     ]
   ]

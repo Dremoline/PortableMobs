@@ -7,16 +7,16 @@
   ],
   "key": {
     "A": {
-      "tag": "forge:ingots/iron"
+      "tag": "forge:rods/wooden"
     },
     "B": {
-      "tag": "forge:glass_panes"
+      "item": "minecraft:iron_bars"
     },
     "C": {
-      "item": "minecraft:bucket"
+      "tag": "forge:chests"
     }
   },
   "result": {
-    "item": "portabletanks:basic_portable_tank"
+    "item": "portablemobs:basic_capture_cell"
   }
 }

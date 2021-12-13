@@ -16,7 +16,6 @@ public class ClientProxy {
         for (PortableMobTypes type : PortableMobTypes.values()) {
             ResourceLocation location = new ModelResourceLocation("portablemobs:" + type.toSuffix() + "_capture_cell", "inventory");
             IBakedModel model = e.getModelRegistry().get(location);
-            System.out.println("model: "+ (model != null));
             if (model != null) {
                 e.getModelRegistry().put(location, new PortableMobBakedItemModel(model));
             }

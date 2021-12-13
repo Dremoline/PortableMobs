@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "portabletanks:advanced_portable_tank"
+      "portablemobs:basic_capture_cell"
     ]
   },
   "criteria": {
-    "has_basic": {
+    "has_item": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "portabletanks:basic_portable_tank"
+            "tag": "forge:rods/wooden"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "portabletanks:advanced_portable_tank"
+        "recipe": "portablemobs:basic_capture_cell"
       }
     }
   },
   "requirements": [
     [
-      "has_basic",
+      "has_item",
       "has_the_recipe"
     ]
   ]

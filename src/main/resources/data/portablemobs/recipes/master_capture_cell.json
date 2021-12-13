@@ -1,0 +1,22 @@
+{
+  "type": "portablemobs:upgrade_capture_cell",
+  "pattern": [
+    "ABA",
+    "BCB",
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:obsidian"
+    },
+    "B": {
+      "item": "minecraft:iron_bars"
+    },
+    "C": {
+      "item": "portablemobs:basic_capture_cell"
+    }
+  },
+  "result": {
+    "item": "portablemobs:master_capture_cell"
+  }
+}
