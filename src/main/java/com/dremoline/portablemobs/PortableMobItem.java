@@ -5,25 +5,28 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
 public class PortableMobItem extends Item {
+    public static final Tags.IOptionalNamedTag<EntityType<?>> BLACKLIST = EntityTypeTags.createOptional(new ResourceLocation("portablemobs", "capture_blacklist"));
+
     public final PortableMobTypes type;
 
     public PortableMobItem(PortableMobTypes type) {
@@ -59,7 +62,7 @@ public class PortableMobItem extends Item {
     public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity player, LivingEntity living, Hand hand) {
         CompoundNBT compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
-            if (!PortableMobsConfig.captureBosses.get() && (living instanceof WitherEntity || living instanceof EnderDragonEntity)) {
+            if (BLACKLIST.contains(living.getType())) {
                 if (player.level.isClientSide)
                     player.sendMessage(TextComponents.translation("portablemobs.capture_failed").color(TextFormatting.RED).get(), player.getUUID());
             } else {

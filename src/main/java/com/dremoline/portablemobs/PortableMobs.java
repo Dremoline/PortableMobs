@@ -23,7 +23,6 @@ public class PortableMobs {
     };
 
     public PortableMobs() {
-        PortableMobsConfig.init();
     }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)

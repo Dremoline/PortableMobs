@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 
-version = '1.0.0-mc1.16'
+version = '1.1.0-forge-mc1.16'
 group = 'com.dremoline.portablemobs' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'portablemobs'
 
@@ -74,16 +74,9 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.35'
 
     // Core Lib
-    compile fg.deobf("curse.maven:supermartijn642s-core-lib-454372:3413422")
+    compile fg.deobf("curse.maven:supermartijn642s-core-lib-454372:3773950")
     // Config Lib
-    compile fg.deobf("curse.maven:supermartijn642s-config-lib-438332:3413938")
-
-    // Mekanism
-    runtimeOnly fg.deobf('curse.maven:mekanism-268560:3206392')
-    // Just Enough Items
-    runtimeOnly fg.deobf("curse.maven:jei-238222:3383214")
-    // Block Renderer
-    runtimeOnly fg.deobf("curse.maven:block-renderer-380456:3294692")
+    compile fg.deobf("curse.maven:supermartijn642s-config-lib-438332:3840231")
 }
 
 
