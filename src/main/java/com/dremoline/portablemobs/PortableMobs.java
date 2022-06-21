@@ -1,13 +1,16 @@
 package com.dremoline.portablemobs;
 
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegisterEvent;
+
+import java.util.Objects;
 
 /**
  * Created 7/7/2020 by SuperMartijn642
@@ -29,14 +32,20 @@ public class PortableMobs {
     public static class RegistryEvents {
 
         @SubscribeEvent
-        public static void onItemRegistry(final RegistryEvent.Register<Item> e) {
-            for (PortableMobTypes type : PortableMobTypes.values())
-                type.registerItem(e);
+        public static void onRegisterEvent(RegisterEvent e) {
+            if (e.getRegistryKey().equals(ForgeRegistries.Keys.ITEMS))
+                onItemRegistry(Objects.requireNonNull(e.getForgeRegistry()));
+            else if (e.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS))
+                onRecipeRegistry(Objects.requireNonNull(e.getForgeRegistry()));
         }
 
-        @SubscribeEvent
-        public static void onRecipeRegistry(final RegistryEvent.Register<RecipeSerializer<?>> e){
-            e.getRegistry().register(PortableMobUpgradeRecipe.SERIALIZER.setRegistryName(new ResourceLocation("portablemobs", "upgrade_capture_cell")));
+        public static void onItemRegistry(IForgeRegistry<Item> registry) {
+            for (PortableMobTypes type : PortableMobTypes.values())
+                type.registerItem(registry);
+        }
+
+        public static void onRecipeRegistry(IForgeRegistry<RecipeSerializer<?>> registry) {
+            registry.register("upgrade_capture_cell", PortableMobUpgradeRecipe.SERIALIZER);
         }
     }
 

@@ -2,28 +2,26 @@ package com.dremoline.portablemobs;
 
 import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.core.TextComponents;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -31,14 +29,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class PortableMobItem extends Item {
-    public static final Tags.IOptionalNamedTag<EntityType<?>> BLACKLIST = EntityTypeTags.createOptional(new ResourceLocation("portablemobs","capture_blacklist"));
+    public static final TagKey<EntityType<?>> BLACKLIST = TagKey.create(ForgeRegistries.ENTITIES.getRegistryKey(), new ResourceLocation("portablemobs", "capture_blacklist"));
 
     public final PortableMobTypes type;
 
     public PortableMobItem(PortableMobTypes type) {
         super(new Item.Properties().stacksTo(1).tab(PortableMobs.GROUP));
         this.type = type;
-        this.setRegistryName(type.toSuffix() + "_capture_cell");
     }
 
     @Override
@@ -78,15 +75,15 @@ public class PortableMobItem extends Item {
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand hand) {
         CompoundTag compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
-            if (BLACKLIST.contains(living.getType())) {
+            if (living.getType().is(BLACKLIST)) {
                 if (player.level.isClientSide)
-                    player.sendMessage(TextComponents.translation("portablemobs.capture_failed").color(ChatFormatting.RED).get(), player.getUUID());
+                    player.sendSystemMessage(TextComponents.translation("portablemobs.capture_failed").color(ChatFormatting.RED).get());
             } else {
                 if (living.isPassenger())
                     living.stopRiding();
                 living.ejectPassengers();
 
-                compound.putString("entity_type", living.getType().getRegistryName().toString());
+                compound.putString("entity_type", ForgeRegistries.ENTITIES.getKey(living.getType()).toString());
                 compound.put("entity_data", living.saveWithoutId(new CompoundTag()));
                 compound.putString("entity_name", Component.Serializer.toJson(TextComponents.entity(living).get()));
                 compound.putBoolean("has_entity", true);
@@ -94,7 +91,7 @@ public class PortableMobItem extends Item {
 
                 player.setItemInHand(hand, stack);
                 if (player.level.isClientSide) {
-                    player.sendMessage(TextComponents.translation("portablemobs.capture_success").color(ChatFormatting.GREEN).get(), player.getUUID());
+                    player.sendSystemMessage(TextComponents.translation("portablemobs.capture_success").color(ChatFormatting.GREEN).get());
                 }
                 return InteractionResult.sidedSuccess(player.level.isClientSide);
             }
