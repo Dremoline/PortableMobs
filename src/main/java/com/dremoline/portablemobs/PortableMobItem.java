@@ -3,6 +3,8 @@ package com.dremoline.portablemobs;
 import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.core.TextComponents;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -28,6 +31,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class PortableMobItem extends Item {
+    public static final Tags.IOptionalNamedTag<EntityType<?>> BLACKLIST = EntityTypeTags.createOptional(new ResourceLocation("portablemobs","capture_blacklist"));
+
     public final PortableMobTypes type;
 
     public PortableMobItem(PortableMobTypes type) {
@@ -73,7 +78,7 @@ public class PortableMobItem extends Item {
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand hand) {
         CompoundTag compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
-            if (!PortableMobsConfig.captureBosses.get() && (living instanceof WitherBoss || living instanceof EnderDragon)) {
+            if (BLACKLIST.contains(living.getType())) {
                 if (player.level.isClientSide)
                     player.sendMessage(TextComponents.translation("portablemobs.capture_failed").color(ChatFormatting.RED).get(), player.getUUID());
             } else {
