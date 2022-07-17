@@ -77,12 +77,12 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19-41.0.45'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.94'
 
     // Core Lib
-    implementation fg.deobf("curse.maven:supermartijn642s-core-lib-454372:3821432")
+    implementation fg.deobf("curse.maven:supermartijn642s-core-lib-454372:3863130")
     // Config Lib
-    implementation fg.deobf("curse.maven:supermartijn642s-config-lib-438332:3840240")
+    implementation fg.deobf("curse.maven:supermartijn642s-config-lib-438332:3871792")
 }
 
 
