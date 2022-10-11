@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -29,40 +29,41 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class PortableMobItem extends Item {
-    public static final TagKey<EntityType<?>> BLACKLIST = TagKey.create(ForgeRegistries.ENTITIES.getRegistryKey(), new ResourceLocation("portablemobs", "capture_blacklist"));
+
+    public static final TagKey<EntityType<?>> BLACKLIST = TagKey.create(ForgeRegistries.ENTITY_TYPES.getRegistryKey(), new ResourceLocation("portablemobs", "capture_blacklist"));
 
     public final PortableMobTypes type;
 
-    public PortableMobItem(PortableMobTypes type) {
+    public PortableMobItem(PortableMobTypes type){
         super(new Item.Properties().stacksTo(1).tab(PortableMobs.GROUP));
         this.type = type;
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer){
+        consumer.accept(new IClientItemExtensions() {
             @Override
-            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+            public BlockEntityWithoutLevelRenderer getCustomRenderer(){
                 return new PortableMobItemStackRenderer(ClientUtils.getMinecraft().getBlockEntityRenderDispatcher());
             }
         });
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public InteractionResult useOn(UseOnContext context){
         CompoundTag compound = context.getItemInHand().getOrCreateTag();
-        if (compound.getBoolean("has_entity")) {
+        if(compound.getBoolean("has_entity")){
             Optional<EntityType<?>> optional = EntityType.byString(compound.getString("entity_type"));
-            if (optional.isPresent()) {
+            if(optional.isPresent()){
                 Entity living = optional.get().create(context.getLevel());
-                if (living != null) {
+                if(living != null){
                     living.load(compound.getCompound("entity_data"));
                     BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
                     living.setPos(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 0.5);
                     context.getLevel().addFreshEntity(living);
-                    if (this.type.reusable) {
+                    if(this.type.reusable){
                         compound.putBoolean("has_entity", false);
-                    } else {
+                    }else{
                         context.getPlayer().setItemInHand(context.getHand(), ItemStack.EMPTY);
                     }
                 }
@@ -72,25 +73,25 @@ public class PortableMobItem extends Item {
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand hand) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand hand){
         CompoundTag compound = stack.getOrCreateTag();
-        if (!compound.getBoolean("has_entity")) {
-            if (living.getType().is(BLACKLIST)) {
-                if (player.level.isClientSide)
+        if(!compound.getBoolean("has_entity")){
+            if(living.getType().is(BLACKLIST)){
+                if(player.level.isClientSide)
                     player.sendSystemMessage(TextComponents.translation("portablemobs.capture_failed").color(ChatFormatting.RED).get());
-            } else {
-                if (living.isPassenger())
+            }else{
+                if(living.isPassenger())
                     living.stopRiding();
                 living.ejectPassengers();
 
-                compound.putString("entity_type", ForgeRegistries.ENTITIES.getKey(living.getType()).toString());
+                compound.putString("entity_type", ForgeRegistries.ENTITY_TYPES.getKey(living.getType()).toString());
                 compound.put("entity_data", living.saveWithoutId(new CompoundTag()));
                 compound.putString("entity_name", Component.Serializer.toJson(TextComponents.entity(living).get()));
                 compound.putBoolean("has_entity", true);
                 living.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 
                 player.setItemInHand(hand, stack);
-                if (player.level.isClientSide) {
+                if(player.level.isClientSide){
                     player.sendSystemMessage(TextComponents.translation("portablemobs.capture_success").color(ChatFormatting.GREEN).get());
                 }
                 return InteractionResult.sidedSuccess(player.level.isClientSide);
@@ -100,9 +101,9 @@ public class PortableMobItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> components, TooltipFlag flag){
         CompoundTag compound = stack.getOrCreateTag();
-        if (compound.getBoolean("has_entity")) {
+        if(compound.getBoolean("has_entity")){
             Component entityName = TextComponents.fromTextComponent(Component.Serializer.fromJson(compound.getString("entity_name"))).color(ChatFormatting.YELLOW).get();
             components.add(TextComponents.translation("portablemobs.tooltip_name", entityName).color(ChatFormatting.WHITE).get());
         }
