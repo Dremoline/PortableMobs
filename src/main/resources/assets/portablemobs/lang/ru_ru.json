@@ -1,0 +1,9 @@
+{
+  "item.portablemobs.basic_capture_cell": "Обычная Переносная Клетка",
+  "item.portablemobs.master_capture_cell": "Прочная Переносная Клетка",
+
+  "portablemobs.capture_failed": "Невозможно поместить этого моба в клетку.",
+  "portablemobs.capture_success": "Моб помещен в клетку.",
+
+  "portablemobs.tooltip_name": "%s"
+}

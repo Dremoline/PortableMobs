@@ -1,0 +1,9 @@
+{
+  "item.portablemobs.basic_capture_cell": "Звичайна клітка для перенесення",
+  "item.portablemobs.master_capture_cell": "Міцна клітка для перенесення",
+
+  "portablemobs.capture_failed": "Неможливо помістити цього моба у клітку.",
+  "portablemobs.capture_success": "Моба поміщено у клітку.",
+
+  "portablemobs.tooltip_name": "%s"
+}
