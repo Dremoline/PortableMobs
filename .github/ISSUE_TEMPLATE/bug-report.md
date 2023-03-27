@@ -3,7 +3,7 @@ name: Bug report
 about: Report of a bug
 title: "[Bug] ..."
 labels: bug
-assignees: SuperMartijn642
+assignees: ''
 
 ---
 
