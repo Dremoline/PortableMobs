@@ -2,19 +2,19 @@ package com.dremoline.portablemobs;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
 import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.core.render.CustomItemRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Quaternionf;
 
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class PortableMobItemStackRenderer implements CustomItemRenderer {
     public static final int ROTATION_TIME = 5000;
 
     @Override
-    public void render(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
+    public void render(ItemStack itemStack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
         BakedModel model = ClientUtils.getItemRenderer().getItemModelShaper().getItemModel(itemStack);
         renderDefaultItem(itemStack, poseStack, transformType, bufferSource, combinedLight, combinedOverlay, model);
 
@@ -40,7 +40,7 @@ public class PortableMobItemStackRenderer implements CustomItemRenderer {
 
                 poseStack.pushPose();
                 poseStack.translate(0.5, 0, 0.5);
-                poseStack.mulPose(new Quaternion(0, (System.currentTimeMillis() % ROTATION_TIME) / (float) ROTATION_TIME * 360, 0, true));
+                poseStack.mulPose(new Quaternionf().setAngleAxis((System.currentTimeMillis() % ROTATION_TIME) / (float) ROTATION_TIME * 2 * Math.PI, 0, 1, 0));
 
                 float width = living.getBbWidth();
                 float height = living.getBbHeight();
@@ -62,7 +62,7 @@ public class PortableMobItemStackRenderer implements CustomItemRenderer {
         renderer.render(living, 0, 0, poseStack, bufferSource, combinedLight);
     }
 
-    private static void renderDefaultItem(ItemStack itemStack, PoseStack poseStack, ItemTransforms.TransformType cameraTransforms, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay, BakedModel model) {
+    private static void renderDefaultItem(ItemStack itemStack, PoseStack poseStack, ItemDisplayContext cameraTransforms, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay, BakedModel model) {
         for (BakedModel passModel : model.getRenderPasses(itemStack, true)) {
             for (RenderType renderType : passModel.getRenderTypes(itemStack, true)) {
                 VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, renderType, true, itemStack.hasFoil());

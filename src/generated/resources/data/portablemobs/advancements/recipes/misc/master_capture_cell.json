@@ -2,13 +2,13 @@
   "parent": "minecraft:recipes/root",
   "display": {
     "icon": {
-      "item": "portablemobs:basic_capture_cell"
+      "item": "portablemobs:master_capture_cell"
     },
     "title": {
-      "translate": "portablemobs.advancement.recipes/portablemobs/basic_capture_cell.title"
+      "translate": "portablemobs.advancement.recipes/misc/master_capture_cell.title"
     },
     "description": {
-      "translate": "portablemobs.advancement.recipes/portablemobs/basic_capture_cell.description"
+      "translate": "portablemobs.advancement.recipes/misc/master_capture_cell.description"
     },
     "frame": "task",
     "show_toast": false,
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "portablemobs:basic_capture_cell"
+        "recipe": "portablemobs:master_capture_cell"
       }
     },
     "recipe_condition": {
@@ -27,7 +27,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:rods/wooden"
+            "items": [
+              "portablemobs:basic_capture_cell"
+            ]
           }
         ]
       }
@@ -41,7 +43,7 @@
   ],
   "rewards": {
     "recipes": [
-      "portablemobs:basic_capture_cell"
+      "portablemobs:master_capture_cell"
     ]
   }
 }
