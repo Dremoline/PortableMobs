@@ -3,7 +3,7 @@ name: Crash report
 about: Report of a crash
 title: "[Crash] ..."
 labels: Crash
-assignees: SuperMartijn642
+assignees: ''
 
 ---
 
