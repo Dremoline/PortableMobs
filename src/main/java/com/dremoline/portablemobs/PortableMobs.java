@@ -1,12 +1,12 @@
 package com.dremoline.portablemobs;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import com.dremoline.portablemobs.generators.PortableMobsLanguageGenerator;
+import com.dremoline.portablemobs.generators.PortableMobsModelGenerator;
+import com.dremoline.portablemobs.generators.PortableMobsRecipeGenerator;
+import com.dremoline.portablemobs.generators.PortableMobsTagGenerator;
+import com.supermartijn642.core.item.CreativeItemGroup;
+import com.supermartijn642.core.registry.GeneratorRegistrationHandler;
+import com.supermartijn642.core.registry.RegistrationHandler;
 import net.minecraftforge.fml.common.Mod;
 
 /**
@@ -15,29 +15,19 @@ import net.minecraftforge.fml.common.Mod;
 @Mod("portablemobs")
 public class PortableMobs {
 
-    public static final CreativeModeTab GROUP = new CreativeModeTab("portablemobs") {
-        @Override
-        public ItemStack makeIcon() {
-            return new ItemStack(PortableMobTypes.BASIC.getItem());
-        }
-    };
+    public static final CreativeItemGroup GROUP = CreativeItemGroup.create("portablemobs", PortableMobTypes.BASIC::getItem);
 
     public PortableMobs() {
-    }
-
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-
-        @SubscribeEvent
-        public static void onItemRegistry(final RegistryEvent.Register<Item> e) {
-            for (PortableMobTypes type : PortableMobTypes.values())
-                type.registerItem(e);
+        RegistrationHandler handler = RegistrationHandler.get("portablemobs");
+        for (PortableMobTypes type : PortableMobTypes.values()) {
+            handler.registerItemCallback(type::registerItem);
         }
+        handler.registerRecipeSerializer("upgrade_capture_cell", PortableMobUpgradeRecipe.SERIALIZER);
 
-        @SubscribeEvent
-        public static void onRecipeRegistry(final RegistryEvent.Register<RecipeSerializer<?>> e){
-            e.getRegistry().register(PortableMobUpgradeRecipe.SERIALIZER.setRegistryName(new ResourceLocation("portablemobs", "upgrade_capture_cell")));
-        }
+        GeneratorRegistrationHandler generatorHandler = GeneratorRegistrationHandler.get("portablemobs");
+        generatorHandler.addGenerator(PortableMobsLanguageGenerator::new);
+        generatorHandler.addGenerator(PortableMobsTagGenerator::new);
+        generatorHandler.addGenerator(PortableMobsRecipeGenerator::new);
+        generatorHandler.addGenerator(PortableMobsModelGenerator::new);
     }
-
 }
