@@ -1,16 +1,13 @@
 package com.dremoline.portablemobs;
 
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import com.dremoline.portablemobs.generators.PortableMobsLanguageGenerator;
+import com.dremoline.portablemobs.generators.PortableMobsModelGenerator;
+import com.dremoline.portablemobs.generators.PortableMobsRecipeGenerator;
+import com.dremoline.portablemobs.generators.PortableMobsTagGenerator;
+import com.supermartijn642.core.item.CreativeItemGroup;
+import com.supermartijn642.core.registry.GeneratorRegistrationHandler;
+import com.supermartijn642.core.registry.RegistrationHandler;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegisterEvent;
-
-import java.util.Objects;
 
 /**
  * Created 7/7/2020 by SuperMartijn642
@@ -18,35 +15,19 @@ import java.util.Objects;
 @Mod("portablemobs")
 public class PortableMobs {
 
-    public static final CreativeModeTab GROUP = new CreativeModeTab("portablemobs") {
-        @Override
-        public ItemStack makeIcon() {
-            return new ItemStack(PortableMobTypes.BASIC.getItem());
-        }
-    };
+    public static final CreativeItemGroup GROUP = CreativeItemGroup.create("portablemobs", PortableMobTypes.BASIC::getItem);
 
     public PortableMobs() {
+        RegistrationHandler handler = RegistrationHandler.get("portablemobs");
+        for (PortableMobTypes type : PortableMobTypes.values()) {
+            handler.registerItemCallback(type::registerItem);
+        }
+        handler.registerRecipeSerializer("upgrade_capture_cell", PortableMobUpgradeRecipe.SERIALIZER);
+
+        GeneratorRegistrationHandler generatorHandler = GeneratorRegistrationHandler.get("portablemobs");
+        generatorHandler.addGenerator(PortableMobsLanguageGenerator::new);
+        generatorHandler.addGenerator(PortableMobsTagGenerator::new);
+        generatorHandler.addGenerator(PortableMobsRecipeGenerator::new);
+        generatorHandler.addGenerator(PortableMobsModelGenerator::new);
     }
-
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-
-        @SubscribeEvent
-        public static void onRegisterEvent(RegisterEvent e) {
-            if (e.getRegistryKey().equals(ForgeRegistries.Keys.ITEMS))
-                onItemRegistry(Objects.requireNonNull(e.getForgeRegistry()));
-            else if (e.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS))
-                onRecipeRegistry(Objects.requireNonNull(e.getForgeRegistry()));
-        }
-
-        public static void onItemRegistry(IForgeRegistry<Item> registry) {
-            for (PortableMobTypes type : PortableMobTypes.values())
-                type.registerItem(registry);
-        }
-
-        public static void onRecipeRegistry(IForgeRegistry<RecipeSerializer<?>> registry) {
-            registry.register("upgrade_capture_cell", PortableMobUpgradeRecipe.SERIALIZER);
-        }
-    }
-
 }
