@@ -1,97 +1,99 @@
 package com.dremoline.portablemobs;
 
 import com.supermartijn642.core.TextComponents;
-import net.minecraft.client.util.ITooltipFlag;
+import com.supermartijn642.core.item.BaseItem;
+import com.supermartijn642.core.item.ItemProperties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public class PortableMobItem extends Item {
+public class PortableMobItem extends BaseItem {
+
     public static final Tags.IOptionalNamedTag<EntityType<?>> BLACKLIST = EntityTypeTags.createOptional(new ResourceLocation("portablemobs", "capture_blacklist"));
 
     public final PortableMobTypes type;
 
     public PortableMobItem(PortableMobTypes type) {
-        super(new Item.Properties().stacksTo(1).tab(PortableMobs.GROUP).setISTER(() -> PortableMobItemStackRenderer::getInstance));
+        super(ItemProperties.create().maxStackSize(1).group(PortableMobs.GROUP));
         this.type = type;
-        this.setRegistryName(type.toSuffix() + "_capture_cell");
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
-        CompoundNBT compound = context.getItemInHand().getOrCreateTag();
+    public InteractionFeedback interactWithBlock(ItemStack stack, PlayerEntity player, Hand hand, World level, BlockPos hitPos, Direction hitSide, Vector3d hitLocation) {
+        CompoundNBT compound = stack.getOrCreateTag();
         if (compound.getBoolean("has_entity")) {
             Optional<EntityType<?>> optional = EntityType.byString(compound.getString("entity_type"));
             if (optional.isPresent()) {
-                Entity living = optional.get().create(context.getLevel());
+                Entity living = optional.get().create(level);
                 if (living != null) {
                     living.load(compound.getCompound("entity_data"));
-                    BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
+                    BlockPos pos = hitPos.relative(hitSide);
                     living.setPos(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 0.5);
-                    context.getLevel().addFreshEntity(living);
+                    level.addFreshEntity(living);
                     if (this.type.reusable) {
                         compound.putBoolean("has_entity", false);
                     } else {
-                        context.getPlayer().setItemInHand(context.getHand(), ItemStack.EMPTY);
+                        player.setItemInHand(hand, ItemStack.EMPTY);
                     }
                 }
             }
         }
-        return super.useOn(context);
+        return super.interactWithBlock(stack, player, hand, level, hitPos, hitSide, hitLocation);
     }
 
     @Override
-    public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity player, LivingEntity living, Hand hand) {
+    public InteractionFeedback interactWithEntity(ItemStack stack, LivingEntity target, PlayerEntity player, Hand hand) {
         CompoundNBT compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
-            if (BLACKLIST.contains(living.getType())) {
+            if (target.getType().is(BLACKLIST)) {
                 if (player.level.isClientSide)
                     player.sendMessage(TextComponents.translation("portablemobs.capture_failed").color(TextFormatting.RED).get(), player.getUUID());
             } else {
-                if (living.isPassenger())
-                    living.stopRiding();
-                living.ejectPassengers();
+                if (target.isPassenger())
+                    target.stopRiding();
+                target.ejectPassengers();
 
-                compound.putString("entity_type", living.getType().getRegistryName().toString());
-                compound.put("entity_data", living.saveWithoutId(new CompoundNBT()));
-                compound.putString("entity_name", ITextComponent.Serializer.toJson(TextComponents.entity(living).get()));
+                compound.putString("entity_type", ForgeRegistries.ENTITIES.getKey(target.getType()).toString());
+                compound.put("entity_data", target.saveWithoutId(new CompoundNBT()));
+                compound.putString("entity_name", ITextComponent.Serializer.toJson(TextComponents.entity(target).get()));
                 compound.putBoolean("has_entity", true);
-                living.remove();
+                target.remove();
 
                 player.setItemInHand(hand, stack);
                 if (player.level.isClientSide) {
                     player.sendMessage(TextComponents.translation("portablemobs.capture_success").color(TextFormatting.GREEN).get(), player.getUUID());
                 }
-                return ActionResultType.sidedSuccess(player.level.isClientSide);
+                return InteractionFeedback.SUCCESS;
             }
         }
-        return super.interactLivingEntity(stack, player, living, hand);
+        return super.interactWithEntity(stack, target, player, hand);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> components, ITooltipFlag flag) {
+    protected void appendItemInformation(ItemStack stack, @Nullable IBlockReader level, Consumer<ITextComponent> info, boolean advanced) {
         CompoundNBT compound = stack.getOrCreateTag();
         if (compound.getBoolean("has_entity")) {
             ITextComponent entityName = TextComponents.fromTextComponent(ITextComponent.Serializer.fromJson(compound.getString("entity_name"))).color(TextFormatting.YELLOW).get();
-            components.add(TextComponents.translation("portablemobs.tooltip_name", entityName).color(TextFormatting.WHITE).get());
+            info.accept(TextComponents.translation("portablemobs.tooltip_name", entityName).color(TextFormatting.WHITE).get());
         }
     }
 }

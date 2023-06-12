@@ -1,5 +1,5 @@
 {
-  "type": "portablemobs:upgrade_capture_cell",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "ABA",
     "BCB",

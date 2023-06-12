@@ -1,7 +1,7 @@
 package com.dremoline.portablemobs;
 
+import com.supermartijn642.core.registry.RegistrationHandler;
 import net.minecraft.item.Item;
-import net.minecraftforge.event.RegistryEvent;
 
 import java.util.Locale;
 
@@ -17,9 +17,9 @@ public enum PortableMobTypes {
         this.reusable = reusable;
     }
 
-    public void registerItem(RegistryEvent.Register<Item> e) {
+    public void registerItem(RegistrationHandler.Helper<Item> helper) {
         this.item = new PortableMobItem(this);
-        e.getRegistry().register(this.item);
+        helper.register(this.toSuffix() + "_capture_cell", this.item);
     }
 
     public Item getItem() {
