@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:recipes/root",
+  "display": {
+    "icon": {
+      "item": "portablemobs:master_capture_cell"
+    },
+    "title": {
+      "translate": "portablemobs.advancement.recipes/portablemobs/master_capture_cell.title"
+    },
+    "description": {
+      "translate": "portablemobs.advancement.recipes/portablemobs/master_capture_cell.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "portablemobs:master_capture_cell"
+      }
+    },
+    "recipe_condition": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "portablemobs:basic_capture_cell"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "recipe_condition"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "portablemobs:master_capture_cell"
+    ]
+  }
+}
