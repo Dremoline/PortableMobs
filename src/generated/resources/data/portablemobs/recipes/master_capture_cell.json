@@ -7,7 +7,7 @@
   ],
   "key": {
     "A": {
-      "tag": "forge:obsidian"
+      "item": "minecraft:obsidian"
     },
     "B": {
       "item": "minecraft:iron_bars"

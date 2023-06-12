@@ -4,7 +4,6 @@ import com.dremoline.portablemobs.PortableMobTypes;
 import com.supermartijn642.core.generator.RecipeGenerator;
 import com.supermartijn642.core.generator.ResourceCache;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
 
 public class PortableMobsRecipeGenerator extends RecipeGenerator {
     public PortableMobsRecipeGenerator(ResourceCache cache) {
@@ -17,15 +16,15 @@ public class PortableMobsRecipeGenerator extends RecipeGenerator {
                 .pattern("ABA")
                 .pattern("BCB")
                 .pattern("ABA")
-                .input('A', Tags.Items.RODS_WOODEN)
+                .input('A', Items.STICK)
                 .input('B', Items.IRON_BARS)
-                .input('C', Tags.Items.CHESTS)
-                .unlockedBy(Tags.Items.RODS_WOODEN);
+                .input('C', Items.CHEST)
+                .unlockedBy(Items.STICK);
         this.shaped(PortableMobTypes.MASTER.getItem())
                 .pattern("ABA")
                 .pattern("BCB")
                 .pattern("ABA")
-                .input('A', Tags.Items.OBSIDIAN)
+                .input('A', Items.OBSIDIAN)
                 .input('B', Items.IRON_BARS)
                 .input('C', PortableMobTypes.BASIC.getItem())
                 .unlockedBy(PortableMobTypes.BASIC.getItem());

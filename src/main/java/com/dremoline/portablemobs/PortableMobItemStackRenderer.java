@@ -26,7 +26,7 @@ public class PortableMobItemStackRenderer implements CustomItemRenderer {
     @Override
     public void render(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
         BakedModel model = ClientUtils.getItemRenderer().getItemModelShaper().getItemModel(itemStack);
-        renderDefaultItem(itemStack, poseStack, transformType, bufferSource, combinedLight, combinedOverlay, model);
+        renderDefaultItem(itemStack, poseStack, bufferSource, combinedLight, combinedOverlay, model);
 
         if (!itemStack.hasTag() || !itemStack.getTag().getBoolean("has_entity")) {
             return;
@@ -63,22 +63,11 @@ public class PortableMobItemStackRenderer implements CustomItemRenderer {
         renderer.render(living, 0, 0, poseStack, bufferSource, combinedLight);
     }
 
-    private static void renderDefaultItem(ItemStack itemStack, PoseStack matrixStack, ItemTransforms.TransformType cameraTransforms, MultiBufferSource renderTypeBuffer, int combinedLight, int combinedOverlay, BakedModel model) {
+    private static void renderDefaultItem(ItemStack itemStack, PoseStack poseStack, MultiBufferSource renderTypeBuffer, int combinedLight, int combinedOverlay, BakedModel model) {
         ItemRenderer renderer = ClientUtils.getMinecraft().getItemRenderer();
 
-        matrixStack.pushPose();
-
-        if (model.isLayered()) {
-            net.minecraftforge.client.ForgeHooksClient.drawItemLayered(renderer, model, itemStack, matrixStack, renderTypeBuffer, combinedLight, combinedOverlay, true);
-        } else {
-            RenderType rendertype = ItemBlockRenderTypes.getRenderType(itemStack, true);
-            VertexConsumer ivertexbuilder;
-
-            ivertexbuilder = ItemRenderer.getFoilBufferDirect(renderTypeBuffer, rendertype, true, itemStack.hasFoil());
-
-            renderer.renderModelLists(model, itemStack, combinedLight, combinedOverlay, matrixStack, ivertexbuilder);
-        }
-
-        matrixStack.popPose();
+        RenderType renderType = ItemBlockRenderTypes.getRenderType(itemStack, true);
+        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(renderTypeBuffer, renderType, true, itemStack.hasFoil());
+        renderer.renderModelLists(model, itemStack, combinedLight, combinedOverlay, poseStack, vertexConsumer);
     }
 }
