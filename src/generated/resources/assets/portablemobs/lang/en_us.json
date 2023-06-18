@@ -3,5 +3,7 @@
   "portablemobs.item.master_capture_cell": "Master Capture Cell",
   "portablemobs.capture_failed": "It's not possible to capture this mob",
   "portablemobs.capture_success": "Capture successful",
-  "portablemobs.tooltip_name": "%s"
+  "portablemobs.tooltip_name": "%s",
+  "portablemobs.item_group": "Portable Mobs",
+  "portablemobs": "Portable Mobs"
 }
