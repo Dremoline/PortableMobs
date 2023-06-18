@@ -5,10 +5,10 @@
       "item": "portablemobs:basic_capture_cell"
     },
     "title": {
-      "translate": "portablemobs.advancement.recipes/portablemobs/basic_capture_cell.title"
+      "translate": "portablemobs.advancement.recipes/misc/basic_capture_cell.title"
     },
     "description": {
-      "translate": "portablemobs.advancement.recipes/portablemobs/basic_capture_cell.description"
+      "translate": "portablemobs.advancement.recipes/misc/basic_capture_cell.description"
     },
     "frame": "task",
     "show_toast": false,

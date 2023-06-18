@@ -64,7 +64,7 @@ public class PortableMobItem extends BaseItem {
         CompoundTag compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
             if (target.getType().is(BLACKLIST)) {
-                if (player.level.isClientSide)
+                if (player.level().isClientSide)
                     player.sendSystemMessage(TextComponents.translation("portablemobs.capture_failed").color(ChatFormatting.RED).get());
             } else {
                 if (target.isPassenger())
@@ -78,7 +78,7 @@ public class PortableMobItem extends BaseItem {
                 target.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 
                 player.setItemInHand(hand, stack);
-                if (player.level.isClientSide) {
+                if (player.level().isClientSide) {
                     player.sendSystemMessage(TextComponents.translation("portablemobs.capture_success").color(ChatFormatting.GREEN).get());
                 }
                 return InteractionFeedback.SUCCESS;

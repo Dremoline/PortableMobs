@@ -1,0 +1,20 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/obsidian"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "portablemobs:item/master_capture_cell"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "portablemobs:item/basic_capture_cell"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/dark_oak_log_top"
+    }
+  ]
+}
