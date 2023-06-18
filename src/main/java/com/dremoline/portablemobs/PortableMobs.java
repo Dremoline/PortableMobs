@@ -7,17 +7,17 @@ import com.dremoline.portablemobs.generators.PortableMobsTagGenerator;
 import com.supermartijn642.core.item.CreativeItemGroup;
 import com.supermartijn642.core.registry.GeneratorRegistrationHandler;
 import com.supermartijn642.core.registry.RegistrationHandler;
-import net.minecraftforge.fml.common.Mod;
+import net.fabricmc.api.ModInitializer;
 
 /**
  * Created 7/7/2020 by SuperMartijn642
  */
-@Mod("portablemobs")
-public class PortableMobs {
+public class PortableMobs implements ModInitializer {
 
     public static final CreativeItemGroup GROUP = CreativeItemGroup.create("portablemobs", PortableMobTypes.BASIC::getItem);
 
-    public PortableMobs() {
+    @Override
+    public void onInitialize() {
         RegistrationHandler handler = RegistrationHandler.get("portablemobs");
         for (PortableMobTypes type : PortableMobTypes.values()) {
             handler.registerItemCallback(type::registerItem);

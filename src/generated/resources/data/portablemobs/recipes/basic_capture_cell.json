@@ -7,13 +7,13 @@
   ],
   "key": {
     "A": {
-      "tag": "forge:rods/wooden"
+      "item": "minecraft:stick"
     },
     "B": {
       "item": "minecraft:iron_bars"
     },
     "C": {
-      "tag": "forge:chests"
+      "item": "minecraft:chest"
     }
   },
   "result": {

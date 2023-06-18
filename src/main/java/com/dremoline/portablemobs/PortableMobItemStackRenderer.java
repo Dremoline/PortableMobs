@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.supermartijn642.core.ClientUtils;
 import com.supermartijn642.core.render.CustomItemRenderer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -25,7 +26,7 @@ public class PortableMobItemStackRenderer implements CustomItemRenderer {
     @Override
     public void render(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
         BakedModel model = ClientUtils.getItemRenderer().getItemModelShaper().getItemModel(itemStack);
-        renderDefaultItem(itemStack, poseStack, transformType, bufferSource, combinedLight, combinedOverlay, model);
+        renderDefaultItem(itemStack, poseStack, bufferSource, combinedLight, combinedOverlay, model);
 
         if (!itemStack.hasTag() || !itemStack.getTag().getBoolean("has_entity")) {
             return;
@@ -62,12 +63,11 @@ public class PortableMobItemStackRenderer implements CustomItemRenderer {
         renderer.render(living, 0, 0, poseStack, bufferSource, combinedLight);
     }
 
-    private static void renderDefaultItem(ItemStack itemStack, PoseStack poseStack, ItemTransforms.TransformType cameraTransforms, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay, BakedModel model) {
-        for (BakedModel passModel : model.getRenderPasses(itemStack, true)) {
-            for (RenderType renderType : passModel.getRenderTypes(itemStack, true)) {
-                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, renderType, true, itemStack.hasFoil());
-                ClientUtils.getItemRenderer().renderModelLists(passModel, itemStack, combinedLight, combinedOverlay, poseStack, vertexConsumer);
-            }
-        }
+    private static void renderDefaultItem(ItemStack itemStack, PoseStack poseStack, MultiBufferSource renderTypeBuffer, int combinedLight, int combinedOverlay, BakedModel model) {
+        ItemRenderer renderer = ClientUtils.getMinecraft().getItemRenderer();
+
+        RenderType renderType = ItemBlockRenderTypes.getRenderType(itemStack, true);
+        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(renderTypeBuffer, renderType, true, itemStack.hasFoil());
+        renderer.renderModelLists(model, itemStack, combinedLight, combinedOverlay, poseStack, vertexConsumer);
     }
 }
