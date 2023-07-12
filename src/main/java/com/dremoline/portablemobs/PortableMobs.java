@@ -1,12 +1,16 @@
 package com.dremoline.portablemobs;
 
-import com.dremoline.portablemobs.generators.PortableMobsLanguageGenerator;
-import com.dremoline.portablemobs.generators.PortableMobsModelGenerator;
-import com.dremoline.portablemobs.generators.PortableMobsRecipeGenerator;
-import com.dremoline.portablemobs.generators.PortableMobsTagGenerator;
+import com.dremoline.portablemobs.generators.*;
 import com.supermartijn642.core.item.CreativeItemGroup;
 import com.supermartijn642.core.registry.GeneratorRegistrationHandler;
 import com.supermartijn642.core.registry.RegistrationHandler;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.critereon.PlayerTrigger;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
@@ -16,6 +20,8 @@ import net.minecraftforge.fml.common.Mod;
 public class PortableMobs {
 
     public static final CreativeItemGroup GROUP = CreativeItemGroup.create("portablemobs", PortableMobTypes.BASIC::getItem);
+
+    public static PlayerTrigger playerCaptureTrigger, captureTrigger;
 
     public PortableMobs() {
         RegistrationHandler handler = RegistrationHandler.get("portablemobs");
@@ -29,5 +35,20 @@ public class PortableMobs {
         generatorHandler.addGenerator(PortableMobsTagGenerator::new);
         generatorHandler.addGenerator(PortableMobsRecipeGenerator::new);
         generatorHandler.addGenerator(PortableMobsModelGenerator::new);
+        generatorHandler.addGenerator(PortableMobsAdvancementGenerator::new);
+
+        playerCaptureTrigger = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation("portablemobs", "playercapture")));
+        captureTrigger = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation("portablemobs", "capture")));
+    }
+
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class Events {
+        @SubscribeEvent
+        public static void onEntityInteract(PlayerInteractEvent.EntityInteract playerInteractEvent) {
+            ItemStack stack = playerInteractEvent.getEntity().getItemInHand(playerInteractEvent.getHand());
+            if (playerInteractEvent.getEntity().isShiftKeyDown() && stack.getItem() instanceof PortableMobItem && playerInteractEvent.getTarget() instanceof LivingEntity) {
+                playerInteractEvent.setCancellationResult(stack.getItem().interactLivingEntity(playerInteractEvent.getItemStack(), playerInteractEvent.getEntity(), (LivingEntity) playerInteractEvent.getTarget(), playerInteractEvent.getHand()));
+            }
+        }
     }
 }
