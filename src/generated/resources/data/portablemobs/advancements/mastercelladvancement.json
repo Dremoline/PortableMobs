@@ -1,0 +1,37 @@
+{
+  "parent": "portablemobs:basiccelladvancement",
+  "display": {
+    "icon": {
+      "item": "portablemobs:master_capture_cell"
+    },
+    "title": {
+      "translate": "portablemobs.advancement.mastercelladvancement.title"
+    },
+    "description": {
+      "translate": "portablemobs.advancement.mastercelladvancement.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "mastercell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "portablemobs:master_capture_cell"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "mastercell"
+    ]
+  ]
+}
