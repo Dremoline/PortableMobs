@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -63,7 +64,12 @@ public class PortableMobItem extends BaseItem {
     public InteractionFeedback interactWithEntity(ItemStack stack, LivingEntity target, Player player, InteractionHand hand) {
         CompoundTag compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
-            if (target.getType().is(BLACKLIST)) {
+            if (target instanceof Player) {
+                if (player.level.isClientSide)
+                    player.sendSystemMessage(TextComponents.translation("portablemobs.capture_failed_player").color(ChatFormatting.RED).get());
+                else
+                    PortableMobs.playerCaptureTrigger.trigger((ServerPlayer) player);
+            } else if (target.getType().is(BLACKLIST)) {
                 if (player.level.isClientSide)
                     player.sendSystemMessage(TextComponents.translation("portablemobs.capture_failed").color(ChatFormatting.RED).get());
             } else {
@@ -80,7 +86,8 @@ public class PortableMobItem extends BaseItem {
                 player.setItemInHand(hand, stack);
                 if (player.level.isClientSide) {
                     player.sendSystemMessage(TextComponents.translation("portablemobs.capture_success").color(ChatFormatting.GREEN).get());
-                }
+                } else
+                    PortableMobs.captureTrigger.trigger((ServerPlayer) player);
                 return InteractionFeedback.SUCCESS;
             }
         }
