@@ -1,0 +1,29 @@
+{
+  "parent": "portablemobs:basiccelladvancement",
+  "display": {
+    "icon": {
+      "item": "minecraft:iron_bars"
+    },
+    "title": {
+      "translate": "portablemobs.advancement.captureadvancement.desc"
+    },
+    "description": {
+      "translate": "portablemobs.advancement.captureadvancement.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "capture": {
+      "trigger": "portablemobs:capture",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "capture"
+    ]
+  ]
+}
