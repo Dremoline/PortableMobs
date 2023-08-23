@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.EntityTypeTags;
@@ -64,9 +65,14 @@ public class PortableMobItem extends BaseItem {
     public InteractionFeedback interactWithEntity(ItemStack stack, LivingEntity target, PlayerEntity player, Hand hand) {
         CompoundNBT compound = stack.getOrCreateTag();
         if (!compound.getBoolean("has_entity")) {
-            if (target.getType().is(BLACKLIST)) {
+            if (target instanceof PlayerEntity) {
                 if (player.level.isClientSide)
-                    player.sendMessage(TextComponents.translation("portablemobs.capture_failed").color(TextFormatting.RED).get(), player.getUUID());
+                    player.displayClientMessage(TextComponents.translation("portablemobs.capture_failed_player").color(TextFormatting.RED).get(), true);
+                else
+                    PortableMobs.playerCaptureTrigger.trigger((ServerPlayerEntity) player);
+            } else if (target.getType().is(BLACKLIST)) {
+                if (player.level.isClientSide)
+                    player.displayClientMessage(TextComponents.translation("portablemobs.capture_failed").color(TextFormatting.RED).get(), true);
             } else {
                 if (target.isPassenger())
                     target.stopRiding();
@@ -80,8 +86,9 @@ public class PortableMobItem extends BaseItem {
 
                 player.setItemInHand(hand, stack);
                 if (player.level.isClientSide) {
-                    player.sendMessage(TextComponents.translation("portablemobs.capture_success").color(TextFormatting.GREEN).get(), player.getUUID());
-                }
+                    player.displayClientMessage(TextComponents.translation("portablemobs.capture_success").color(TextFormatting.GREEN).get(), true);
+                } else
+                    PortableMobs.captureTrigger.trigger((ServerPlayerEntity) player);
                 return InteractionFeedback.SUCCESS;
             }
         }

@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "portablemobs:basic_capture_cell"
+    },
+    "title": {
+      "translate": "portablemobs.advancement.basiccelladvancement.title"
+    },
+    "description": {
+      "translate": "portablemobs.advancement.basiccelladvancement.desc"
+    },
+    "frame": "task",
+    "background": "minecraft:textures/block/smooth_stone.png",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "basiccell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "portablemobs:basic_capture_cell"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "basiccell"
+    ]
+  ]
+}
