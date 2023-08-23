@@ -1,0 +1,29 @@
+{
+  "parent": "portablemobs:basiccelladvancement",
+  "display": {
+    "icon": {
+      "item": "minecraft:barrier"
+    },
+    "title": {
+      "translate": "portablemobs.advancement.playercaptureadvancement.title"
+    },
+    "description": {
+      "translate": "portablemobs.advancement.playercaptureadvancement.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "playertrigger": {
+      "trigger": "portablemobs:playercapture",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "playertrigger"
+    ]
+  ]
+}
