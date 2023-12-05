@@ -1,12 +1,13 @@
 package com.dremoline.portablemobs.generators;
 
 import com.dremoline.portablemobs.PortableMobTypes;
+import com.dremoline.portablemobs.PortableMobs;
 import com.supermartijn642.core.generator.AdvancementGenerator;
 import com.supermartijn642.core.generator.ResourceCache;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.PlayerTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+
+import java.util.Optional;
 
 public class PortableMobsAdvancementGenerator extends AdvancementGenerator {
     public PortableMobsAdvancementGenerator(ResourceCache cache) {
@@ -41,7 +42,7 @@ public class PortableMobsAdvancementGenerator extends AdvancementGenerator {
                 .title("portablemobs.advancement.playercaptureadvancement.title")
                 .taskFrame()
                 .parent("basiccelladvancement")
-                .criterion("playertrigger", new PlayerTrigger.TriggerInstance(new ResourceLocation("portablemobs", "playercapture"), ContextAwarePredicate.ANY));
+                .criterion("playertrigger", PortableMobs.playerCaptureTrigger.createCriterion(new PlayerTrigger.TriggerInstance(Optional.empty())));
 
         this.advancement("captureadvancement")
                 .icon(Items.IRON_BARS)
@@ -50,6 +51,6 @@ public class PortableMobsAdvancementGenerator extends AdvancementGenerator {
                 .title("portablemobs.advancement.captureadvancement.desc")
                 .taskFrame()
                 .parent("basiccelladvancement")
-                .criterion("capture", new PlayerTrigger.TriggerInstance(new ResourceLocation("portablemobs", "capture"), ContextAwarePredicate.ANY));
+                .criterion("capture", PortableMobs.captureTrigger.createCriterion(new PlayerTrigger.TriggerInstance(Optional.empty())));
     }
 }

@@ -17,8 +17,7 @@
   },
   "criteria": {
     "playertrigger": {
-      "trigger": "portablemobs:playercapture",
-      "conditions": {}
+      "trigger": "portablemobs:playercapture"
     }
   },
   "requirements": [
