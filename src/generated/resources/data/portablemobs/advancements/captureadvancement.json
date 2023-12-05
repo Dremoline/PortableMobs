@@ -17,8 +17,7 @@
   },
   "criteria": {
     "capture": {
-      "trigger": "portablemobs:capture",
-      "conditions": {}
+      "trigger": "portablemobs:capture"
     }
   },
   "requirements": [
