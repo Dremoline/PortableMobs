@@ -33,7 +33,7 @@ public class PortableMobs implements ModInitializer {
         generatorHandler.addGenerator(PortableMobsModelGenerator::new);
         generatorHandler.addGenerator(PortableMobsAdvancementGenerator::new);
 
-        playerCaptureTrigger = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation("portablemobs", "playercapture")));
-        captureTrigger = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation("portablemobs", "capture")));
+        playerCaptureTrigger = CriteriaTriggers.register(new ResourceLocation("portablemobs", "playercapture").toString(),new PlayerTrigger());
+        captureTrigger = CriteriaTriggers.register(new ResourceLocation("portablemobs", "capture").toString(),new PlayerTrigger());
     }
 }

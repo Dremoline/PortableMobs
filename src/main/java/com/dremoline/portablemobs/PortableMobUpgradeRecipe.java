@@ -1,11 +1,10 @@
 package com.dremoline.portablemobs;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -21,8 +20,8 @@ public class PortableMobUpgradeRecipe extends ShapedRecipe {
 
     public static final RecipeSerializer<PortableMobUpgradeRecipe> SERIALIZER = new PortableMobUpgradeRecipe.Serializer();
 
-    public PortableMobUpgradeRecipe(ResourceLocation location, String group, CraftingBookCategory category, int recipeWidth, int recipeHeight, NonNullList<Ingredient> ingredients, ItemStack output, boolean showNotification) {
-        super(location, group, category, recipeWidth, recipeHeight, ingredients, output, showNotification);
+    public PortableMobUpgradeRecipe(String group, CraftingBookCategory category, int recipeWidth, int recipeHeight, NonNullList<Ingredient> ingredients, ItemStack output, boolean showNotification) {
+        super(group, category, recipeWidth, recipeHeight, ingredients, output, showNotification);
     }
 
     @Override
@@ -54,18 +53,21 @@ public class PortableMobUpgradeRecipe extends ShapedRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<PortableMobUpgradeRecipe> {
+        private static final Codec<PortableMobUpgradeRecipe> CODEC = ShapedRecipe.Serializer.CODEC.xmap(
+                shapedRecipe -> new PortableMobUpgradeRecipe(shapedRecipe.getGroup(), shapedRecipe.category(), shapedRecipe.getWidth(), shapedRecipe.getHeight(), shapedRecipe.getIngredients(), shapedRecipe.getResultItem(null), shapedRecipe.showNotification()),
+                portableMobUpgradeRecipe -> portableMobUpgradeRecipe
+        );
 
         @Override
-        public PortableMobUpgradeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromJson(recipeId, json);
-            return new PortableMobUpgradeRecipe(recipeId, recipe.getGroup(), recipe.category(), recipe.getWidth(), recipe.getHeight(), recipe.getIngredients(), recipe.getResultItem(null), recipe.showNotification());
+        public Codec<PortableMobUpgradeRecipe> codec() {
+            return CODEC;
         }
 
         @Nullable
         @Override
-        public PortableMobUpgradeRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromNetwork(recipeId, buffer);
-            return new PortableMobUpgradeRecipe(recipeId, recipe.getGroup(), recipe.category(), recipe.getWidth(), recipe.getHeight(), recipe.getIngredients(), recipe.getResultItem(null), recipe.showNotification());
+        public PortableMobUpgradeRecipe fromNetwork(FriendlyByteBuf buffer) {
+            ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromNetwork(buffer);
+            return new PortableMobUpgradeRecipe(recipe.getGroup(), recipe.category(), recipe.getWidth(), recipe.getHeight(), recipe.getIngredients(), recipe.getResultItem(null), recipe.showNotification());
         }
 
         @Override
