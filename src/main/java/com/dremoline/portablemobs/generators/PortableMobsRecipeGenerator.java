@@ -25,7 +25,7 @@ public class PortableMobsRecipeGenerator extends RecipeGenerator {
                 .pattern("ABA")
                 .pattern("BCB")
                 .pattern("ABA")
-                .input('A', Tags.Items.OBSIDIAN)
+                .input('A', Tags.Items.OBSIDIANS)
                 .input('B', Items.IRON_BARS)
                 .input('C', PortableMobTypes.BASIC.getItem())
                 .unlockedBy(PortableMobTypes.BASIC.getItem());

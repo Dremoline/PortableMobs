@@ -7,7 +7,7 @@
   ],
   "key": {
     "A": {
-      "tag": "forge:obsidian"
+      "tag": "c:obsidians"
     },
     "B": {
       "item": "minecraft:iron_bars"
@@ -17,6 +17,6 @@
     }
   },
   "result": {
-    "item": "portablemobs:master_capture_cell"
+    "id": "portablemobs:master_capture_cell"
   }
 }

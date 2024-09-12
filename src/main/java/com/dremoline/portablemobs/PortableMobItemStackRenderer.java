@@ -27,11 +27,11 @@ public class PortableMobItemStackRenderer implements CustomItemRenderer {
         BakedModel model = ClientUtils.getItemRenderer().getItemModelShaper().getItemModel(itemStack);
         renderDefaultItem(itemStack, poseStack, transformType, bufferSource, combinedLight, combinedOverlay, model);
 
-        if (!itemStack.hasTag() || !itemStack.getTag().getBoolean("has_entity")) {
+        CompoundTag compound = itemStack.get(PortableMobItem.CAPTURED_ENTITY);
+        if (compound == null || !compound.getBoolean("has_entity")) {
             return;
         }
 
-        CompoundTag compound = itemStack.getTag();
         Optional<EntityType<?>> optional = EntityType.byString(compound.getString("entity_type"));
         if (optional.isPresent()) {
             Entity living = optional.get().create(ClientUtils.getWorld());

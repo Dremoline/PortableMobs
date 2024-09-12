@@ -1,6 +1,7 @@
 package com.dremoline.portablemobs;
 
 import com.dremoline.portablemobs.generators.*;
+import com.supermartijn642.core.CommonUtils;
 import com.supermartijn642.core.item.CreativeItemGroup;
 import com.supermartijn642.core.registry.GeneratorRegistrationHandler;
 import com.supermartijn642.core.registry.RegistrationHandler;
@@ -8,6 +9,7 @@ import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
@@ -27,8 +29,12 @@ public class PortableMobs {
             handler.registerItemCallback(type::registerItem);
         }
         handler.registerRecipeSerializer("upgrade_capture_cell", PortableMobUpgradeRecipe.SERIALIZER);
+        handler.registerDataComponentType("capture_cell_captured_entity", PortableMobItem.CAPTURED_ENTITY);
         handler.registerTriggerType("playercapture", () -> playerCaptureTrigger = new PlayerTrigger());
         handler.registerTriggerType("capture", () -> captureTrigger = new PlayerTrigger());
+
+        if (CommonUtils.getEnvironmentSide().isClient())
+            PortableMobsClient.register();
 
         GeneratorRegistrationHandler generatorHandler = GeneratorRegistrationHandler.get("portablemobs");
         generatorHandler.addGenerator(PortableMobsLanguageGenerator::new);
@@ -38,7 +44,7 @@ public class PortableMobs {
         generatorHandler.addGenerator(PortableMobsAdvancementGenerator::new);
     }
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME)
     public static class Events {
         @SubscribeEvent
         public static void onEntityInteract(PlayerInteractEvent.EntityInteract playerInteractEvent) {

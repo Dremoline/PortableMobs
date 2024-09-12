@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "portablemobs:basic_capture_cell"
+      "id": "portablemobs:basic_capture_cell"
     },
     "title": {
       "translate": "portablemobs.advancement.basiccelladvancement.title"
@@ -21,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "portablemobs:basic_capture_cell"
-            ]
+            "items": "portablemobs:basic_capture_cell"
           }
         ]
       }

@@ -7,16 +7,16 @@
   ],
   "key": {
     "A": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     "B": {
       "item": "minecraft:iron_bars"
     },
     "C": {
-      "tag": "forge:chests"
+      "tag": "c:chests"
     }
   },
   "result": {
-    "item": "portablemobs:basic_capture_cell"
+    "id": "portablemobs:basic_capture_cell"
   }
 }

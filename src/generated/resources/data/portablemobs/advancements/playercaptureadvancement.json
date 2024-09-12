@@ -2,7 +2,7 @@
   "parent": "portablemobs:basiccelladvancement",
   "display": {
     "icon": {
-      "item": "minecraft:barrier"
+      "id": "minecraft:barrier"
     },
     "title": {
       "translate": "portablemobs.advancement.playercaptureadvancement.title"
