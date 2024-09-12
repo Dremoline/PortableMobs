@@ -1,6 +1,7 @@
 package com.dremoline.portablemobs;
 
 import com.dremoline.portablemobs.generators.*;
+import com.supermartijn642.core.CommonUtils;
 import com.supermartijn642.core.item.CreativeItemGroup;
 import com.supermartijn642.core.registry.GeneratorRegistrationHandler;
 import com.supermartijn642.core.registry.RegistrationHandler;
@@ -29,6 +30,9 @@ public class PortableMobs {
         handler.registerRecipeSerializer("upgrade_capture_cell", PortableMobUpgradeRecipe.SERIALIZER);
         handler.registerTriggerType("playercapture", () -> playerCaptureTrigger = new PlayerTrigger());
         handler.registerTriggerType("capture", () -> captureTrigger = new PlayerTrigger());
+
+        if (CommonUtils.getEnvironmentSide().isClient())
+            PortableMobsClient.register();
 
         GeneratorRegistrationHandler generatorHandler = GeneratorRegistrationHandler.get("portablemobs");
         generatorHandler.addGenerator(PortableMobsLanguageGenerator::new);
