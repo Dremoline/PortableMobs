@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "display": {
     "icon": {
-      "item": "portablemobs:basic_capture_cell"
+      "id": "portablemobs:basic_capture_cell"
     },
     "title": {
       "translate": "portablemobs.advancement.recipes/misc/basic_capture_cell.title"
@@ -27,7 +27,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:rods/wooden"
+            "items": "#forge:rods/wooden"
           }
         ]
       }

@@ -2,7 +2,7 @@
   "parent": "portablemobs:basiccelladvancement",
   "display": {
     "icon": {
-      "item": "minecraft:iron_bars"
+      "id": "minecraft:iron_bars"
     },
     "title": {
       "translate": "portablemobs.advancement.captureadvancement.desc"

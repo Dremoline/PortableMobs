@@ -1,13 +1,16 @@
 package com.dremoline.portablemobs;
 
+import com.supermartijn642.core.CommonUtils;
 import com.supermartijn642.core.TextComponents;
 import com.supermartijn642.core.item.BaseItem;
 import com.supermartijn642.core.item.ItemProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -17,18 +20,18 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class PortableMobItem extends BaseItem {
 
     public static final TagKey<EntityType<?>> BLACKLIST = TagKey.create(ForgeRegistries.ENTITY_TYPES.getRegistryKey(), new ResourceLocation("portablemobs", "capture_blacklist"));
+
+    public static final DataComponentType<CompoundTag> CAPTURED_ENTITY = DataComponentType.<CompoundTag>builder().persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG).build();
 
     public final PortableMobTypes type;
 
@@ -39,8 +42,8 @@ public class PortableMobItem extends BaseItem {
 
     @Override
     public InteractionFeedback interactWithBlock(ItemStack stack, Player player, InteractionHand hand, Level level, BlockPos hitPos, Direction hitSide, Vec3 hitLocation) {
-        CompoundTag compound = stack.getOrCreateTag();
-        if (compound.getBoolean("has_entity")) {
+        CompoundTag compound = stack.get(CAPTURED_ENTITY);
+        if (compound != null && compound.getBoolean("has_entity")) {
             Optional<EntityType<?>> optional = EntityType.byString(compound.getString("entity_type"));
             if (optional.isPresent()) {
                 Entity living = optional.get().create(level);
@@ -62,8 +65,8 @@ public class PortableMobItem extends BaseItem {
 
     @Override
     public InteractionFeedback interactWithEntity(ItemStack stack, LivingEntity target, Player player, InteractionHand hand) {
-        CompoundTag compound = stack.getOrCreateTag();
-        if (!compound.getBoolean("has_entity")) {
+        CompoundTag compound = stack.get(CAPTURED_ENTITY);
+        if (compound == null || !compound.getBoolean("has_entity")) {
             if (target instanceof Player) {
                 if (player.level().isClientSide)
                     player.sendSystemMessage(TextComponents.translation("portablemobs.capture_failed_player").color(ChatFormatting.RED).get());
@@ -77,10 +80,12 @@ public class PortableMobItem extends BaseItem {
                     target.stopRiding();
                 target.ejectPassengers();
 
+                compound = new CompoundTag();
                 compound.putString("entity_type", ForgeRegistries.ENTITY_TYPES.getKey(target.getType()).toString());
                 compound.put("entity_data", target.saveWithoutId(new CompoundTag()));
-                compound.putString("entity_name", Component.Serializer.toJson(TextComponents.entity(target).get()));
+                compound.putString("entity_name", Component.Serializer.toJson(TextComponents.entity(target).get(), target.level().registryAccess()));
                 compound.putBoolean("has_entity", true);
+                stack.set(CAPTURED_ENTITY, compound);
                 target.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 
                 player.setItemInHand(hand, stack);
@@ -95,10 +100,10 @@ public class PortableMobItem extends BaseItem {
     }
 
     @Override
-    protected void appendItemInformation(ItemStack stack, @Nullable BlockGetter level, Consumer<Component> info, boolean advanced) {
-        CompoundTag compound = stack.getOrCreateTag();
-        if (compound.getBoolean("has_entity")) {
-            Component entityName = TextComponents.fromTextComponent(Component.Serializer.fromJson(compound.getString("entity_name"))).color(ChatFormatting.YELLOW).get();
+    protected void appendItemInformation(ItemStack stack, Consumer<Component> info, boolean advanced) {
+        CompoundTag compound = stack.get(CAPTURED_ENTITY);
+        if (compound != null && compound.getBoolean("has_entity")) {
+            Component entityName = TextComponents.fromTextComponent(Component.Serializer.fromJson(compound.getString("entity_name"), CommonUtils.getRegistryAccess())).color(ChatFormatting.YELLOW).get();
             info.accept(TextComponents.translation("portablemobs.tooltip_name", entityName).color(ChatFormatting.WHITE).get());
         }
     }

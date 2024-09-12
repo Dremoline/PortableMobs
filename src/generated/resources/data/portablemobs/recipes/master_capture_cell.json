@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "portablemobs:upgrade_capture_cell",
   "pattern": [
     "ABA",
     "BCB",
@@ -17,6 +17,6 @@
     }
   },
   "result": {
-    "item": "portablemobs:master_capture_cell"
+    "id": "portablemobs:master_capture_cell"
   }
 }

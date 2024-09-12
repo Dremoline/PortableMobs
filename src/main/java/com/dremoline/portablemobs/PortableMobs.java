@@ -1,12 +1,11 @@
 package com.dremoline.portablemobs;
 
 import com.dremoline.portablemobs.generators.*;
+import com.supermartijn642.core.CommonUtils;
 import com.supermartijn642.core.item.CreativeItemGroup;
 import com.supermartijn642.core.registry.GeneratorRegistrationHandler;
 import com.supermartijn642.core.registry.RegistrationHandler;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.PlayerTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -29,6 +28,12 @@ public class PortableMobs {
             handler.registerItemCallback(type::registerItem);
         }
         handler.registerRecipeSerializer("upgrade_capture_cell", PortableMobUpgradeRecipe.SERIALIZER);
+        handler.registerDataComponentType("capture_cell_captured_entity", PortableMobItem.CAPTURED_ENTITY);
+        handler.registerTriggerType("playercapture", () -> playerCaptureTrigger = new PlayerTrigger());
+        handler.registerTriggerType("capture", () -> captureTrigger = new PlayerTrigger());
+
+        if (CommonUtils.getEnvironmentSide().isClient())
+            PortableMobsClient.register();
 
         GeneratorRegistrationHandler generatorHandler = GeneratorRegistrationHandler.get("portablemobs");
         generatorHandler.addGenerator(PortableMobsLanguageGenerator::new);
@@ -36,9 +41,6 @@ public class PortableMobs {
         generatorHandler.addGenerator(PortableMobsRecipeGenerator::new);
         generatorHandler.addGenerator(PortableMobsModelGenerator::new);
         generatorHandler.addGenerator(PortableMobsAdvancementGenerator::new);
-
-        playerCaptureTrigger = CriteriaTriggers.register(new ResourceLocation("portablemobs", "playercapture").toString(),new PlayerTrigger());
-        captureTrigger = CriteriaTriggers.register(new ResourceLocation("portablemobs", "capture").toString(),new PlayerTrigger());
     }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
