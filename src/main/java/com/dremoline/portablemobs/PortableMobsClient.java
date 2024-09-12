@@ -13,7 +13,7 @@ public class PortableMobsClient implements ClientModInitializer {
         ClientRegistrationHandler handler = ClientRegistrationHandler.get("portablemobs");
         for (PortableMobTypes type : PortableMobTypes.values()) {
             handler.registerCustomItemRenderer(type::getItem, PortableMobItemStackRenderer::new);
-            ResourceLocation location = new ModelResourceLocation(new ResourceLocation("portablemobs:" + type.toSuffix() + "_capture_cell"), "inventory");
+            ModelResourceLocation location = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath("portablemobs", type.toSuffix() + "_capture_cell"), "inventory");
             handler.registerModelOverwrite(location, CustomRendererBakedModelWrapper::wrap);
         }
     }
