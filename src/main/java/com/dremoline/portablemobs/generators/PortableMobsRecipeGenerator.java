@@ -1,6 +1,7 @@
 package com.dremoline.portablemobs.generators;
 
 import com.dremoline.portablemobs.PortableMobTypes;
+import com.dremoline.portablemobs.PortableMobUpgradeRecipe;
 import com.supermartijn642.core.generator.RecipeGenerator;
 import com.supermartijn642.core.generator.ResourceCache;
 import net.minecraft.world.item.Items;
@@ -27,6 +28,7 @@ public class PortableMobsRecipeGenerator extends RecipeGenerator {
                 .input('A', Items.OBSIDIAN)
                 .input('B', Items.IRON_BARS)
                 .input('C', PortableMobTypes.BASIC.getItem())
-                .unlockedBy(PortableMobTypes.BASIC.getItem());
+                .unlockedBy(PortableMobTypes.BASIC.getItem())
+                .customSerializer(PortableMobUpgradeRecipe.SERIALIZER);
     }
 }
