@@ -1,4 +1,8 @@
-### Portable Mobs 1.2.3
+### Portable Mobs 1.2.1
+- Fixed recipe not holding data.
+- Mob Render fixed 
+
+### Portable Mobs 1.2.0
 - Added advancements
 - Player interaction check
 - Shift-Right click fixed for entities with interaction.
