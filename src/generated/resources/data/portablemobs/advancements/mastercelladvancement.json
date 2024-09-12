@@ -2,7 +2,7 @@
   "parent": "portablemobs:basiccelladvancement",
   "display": {
     "icon": {
-      "item": "portablemobs:master_capture_cell"
+      "id": "portablemobs:master_capture_cell"
     },
     "title": {
       "translate": "portablemobs.advancement.mastercelladvancement.title"
@@ -21,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "portablemobs:master_capture_cell"
-            ]
+            "items": "portablemobs:master_capture_cell"
           }
         ]
       }
