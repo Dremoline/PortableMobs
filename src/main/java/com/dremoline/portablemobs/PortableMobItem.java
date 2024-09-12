@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 
 public class PortableMobItem extends BaseItem {
 
-    public static final TagKey<EntityType<?>> BLACKLIST = TagKey.create(ForgeRegistries.ENTITY_TYPES.getRegistryKey(), new ResourceLocation("portablemobs", "capture_blacklist"));
+    public static final TagKey<EntityType<?>> BLACKLIST = TagKey.create(ForgeRegistries.ENTITY_TYPES.getRegistryKey(), ResourceLocation.fromNamespaceAndPath("portablemobs", "capture_blacklist"));
 
     public static final DataComponentType<CompoundTag> CAPTURED_ENTITY = DataComponentType.<CompoundTag>builder().persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG).build();
 
