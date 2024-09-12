@@ -6,6 +6,8 @@ import com.supermartijn642.core.item.ItemProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -28,7 +29,7 @@ import java.util.function.Consumer;
 
 public class PortableMobItem extends BaseItem {
 
-    public static final TagKey<EntityType<?>> BLACKLIST = TagKey.create(ForgeRegistries.ENTITY_TYPES.getRegistryKey(), new ResourceLocation("portablemobs", "capture_blacklist"));
+    public static final TagKey<EntityType<?>> BLACKLIST = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("portablemobs", "capture_blacklist"));
 
     public final PortableMobTypes type;
 
@@ -77,7 +78,7 @@ public class PortableMobItem extends BaseItem {
                     target.stopRiding();
                 target.ejectPassengers();
 
-                compound.putString("entity_type", ForgeRegistries.ENTITY_TYPES.getKey(target.getType()).toString());
+                compound.putString("entity_type", BuiltInRegistries.ENTITY_TYPE.getKey(target.getType()).toString());
                 compound.put("entity_data", target.saveWithoutId(new CompoundTag()));
                 compound.putString("entity_name", Component.Serializer.toJson(TextComponents.entity(target).get()));
                 compound.putBoolean("has_entity", true);
