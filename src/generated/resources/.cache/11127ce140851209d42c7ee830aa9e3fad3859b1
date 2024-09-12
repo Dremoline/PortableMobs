@@ -1,4 +1,4 @@
-// this.cache.versionId	2023-07-12T19:37:15.0235854	Core Lib Generators
+// this.cache.versionId	2024-09-12T20:28:15.8774963	Core Lib Generators
 186463aff51e80f521f7067cf182643aab505f3b assets\portablemobs\models\item\master_capture_cell.json
 c78d2498f27e56d9b1165043d5f475b822dcf9db data\forge\tags\entity_types\bosses.json
 abcbe3e3493b664deb7c5fa1e7403f7b53622ff6 data\portablemobs\tags\entity_types\capture_blacklist.json
@@ -7,7 +7,7 @@ ad531066f3dd84cd3fed0ce54ac61c7ea536e361 data\portablemobs\advancements\capturea
 5100700e8919a791b297bb6b070cbc67e659196c data\portablemobs\advancements\recipes\misc\basic_capture_cell.json
 bbaa41eabe8589b67f784c28a393b44833f42909 assets\portablemobs\lang\en_us.json
 9a79c53772b00ad23fa3b779d59740b7764eba3e data\portablemobs\recipes\basic_capture_cell.json
-1a1aeffee7fb2f8501b5aa69b9d8f1f58eb00ee7 data\portablemobs\recipes\master_capture_cell.json
+6786757f37a74c3d7a5555d02d32aeaffcea2712 data\portablemobs\recipes\master_capture_cell.json
 4251dd30d76f0b909388e9ef7c4712d5e613b88d data\portablemobs\advancements\basiccelladvancement.json
 59b045cf55574665bf9a6c4596f8ef4796fe24b9 data\portablemobs\advancements\playercaptureadvancement.json
 d7e21d0e2c21cdf39a076cdbaeb4db72e6784a4d data\portablemobs\advancements\mastercelladvancement.json
