@@ -1,9 +1,9 @@
-// 1.20.6	2024-09-12T21:57:37.293907	Core Lib Generators
+// 1.20.6	2024-09-12T22:27:19.66357	Core Lib Generators
 23514b70266e8af4c26cc357841dde1c0cd86186 assets/minecraft/atlases/blocks.json
 bbaa41eabe8589b67f784c28a393b44833f42909 assets/portablemobs/lang/en_us.json
 91f7175b360a25978c81304ed27176567712c0b6 assets/portablemobs/models/item/basic_capture_cell.json
 186463aff51e80f521f7067cf182643aab505f3b assets/portablemobs/models/item/master_capture_cell.json
-0665996927b87d279189dd6615072cd29f4ddc63 data/forge/tags/entity_types/bosses.json
+c78d2498f27e56d9b1165043d5f475b822dcf9db data/forge/tags/entity_types/bosses.json
 cd01293a59908ed126abf56ffc72e409849194c5 data/portablemobs/advancements/basiccelladvancement.json
 f8d132883b4bdee3b76ab93931428e99745e5d88 data/portablemobs/advancements/captureadvancement.json
 a38aee9d0975a10ef41d4c22150d29e0b46a3f87 data/portablemobs/advancements/mastercelladvancement.json
@@ -11,5 +11,5 @@ a38aee9d0975a10ef41d4c22150d29e0b46a3f87 data/portablemobs/advancements/masterce
 db092b97c66075c2acc0ccad72ff55a4779aa593 data/portablemobs/advancements/recipes/misc/basic_capture_cell.json
 81553d1138a802077a822cfa8a2e26543f5147ab data/portablemobs/advancements/recipes/misc/master_capture_cell.json
 c4950ba8dc97fd592f24fc7c58287f6e50b08d41 data/portablemobs/recipes/basic_capture_cell.json
-e0582817ae2ded7d6b570cd67b56ea9af4ac0c7d data/portablemobs/recipes/master_capture_cell.json
+fcfda001475cc96853f3b24d6bb33887633f11cd data/portablemobs/recipes/master_capture_cell.json
 abcbe3e3493b664deb7c5fa1e7403f7b53622ff6 data/portablemobs/tags/entity_types/capture_blacklist.json
