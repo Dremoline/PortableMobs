@@ -1,3 +1,7 @@
+### Portable Mobs 1.2.1
+- Fixed recipe not holding data.
+- Mob Render fixed 
+
 ### Portable Mobs 1.2.0
 - Added advancements
 - Player interaction check
@@ -5,7 +9,7 @@
 - Languagegenerator itemgroup added
 
 ### Portable Mobs 1.1.2
--Updated to corelib 1.1
+- Updated to corelib 1.1
 
 ### Portable Mobs 1.1.1
--Added Russian and Ukrainian translations
+- Added Russian and Ukrainian translations
