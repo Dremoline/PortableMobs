@@ -1,8 +1,7 @@
-// this.cache.versionId	2024-09-12T21:05:46.5076627	Core Lib Generators
+// this.cache.versionId	2024-09-13T16:57:25.8150228	Core Lib Generators
 186463aff51e80f521f7067cf182643aab505f3b assets\portablemobs\models\item\master_capture_cell.json
 7bb7e5fcbd32cae602e8e8f00ae56f980b9d4c82 data\portablemobs\advancement\playercaptureadvancement.json
-c78d2498f27e56d9b1165043d5f475b822dcf9db data\forge\tags\entity_type\bosses.json
-abcbe3e3493b664deb7c5fa1e7403f7b53622ff6 data\portablemobs\tags\entity_type\capture_blacklist.json
+8505cff20a7d9b8d23614238c92823c2a4a670f9 data\portablemobs\tags\entity_type\capture_blacklist.json
 f8d132883b4bdee3b76ab93931428e99745e5d88 data\portablemobs\advancement\captureadvancement.json
 bbaa41eabe8589b67f784c28a393b44833f42909 assets\portablemobs\lang\en_us.json
 d8611f675852e0ae07d4f679de02237aaa3a28ad data\portablemobs\recipe\basic_capture_cell.json

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:bosses"
+    "#c:capturing_not_supported",
+    "#c:bosses"
   ]
 }
