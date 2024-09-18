@@ -1,3 +1,6 @@
+### Portable Mobs 1.2.1a
+- Used fabric "Capturing_not_supported" tag #13
+
 ### Portable Mobs 1.2.1
 - Fixed recipe not holding data.
 - Mob Render fixed 
