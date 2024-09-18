@@ -1,8 +1,9 @@
-// this.cache.versionId	2024-09-12T20:33:29.9646695	Core Lib Generators
+// this.cache.versionId	2024-09-18T14:12:59.5151903	Core Lib Generators
+8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\c\tags\entity_types\teleporting_not_supported.json
 186463aff51e80f521f7067cf182643aab505f3b assets\portablemobs\models\item\master_capture_cell.json
-c78d2498f27e56d9b1165043d5f475b822dcf9db data\forge\tags\entity_types\bosses.json
-abcbe3e3493b664deb7c5fa1e7403f7b53622ff6 data\portablemobs\tags\entity_types\capture_blacklist.json
+2c55d90c23dca81d8745e6266847d4a3feaa11c0 data\portablemobs\tags\entity_types\capture_blacklist.json
 a29f00240360b750d05438827a3170e8745401c6 data\portablemobs\advancements\recipes\misc\master_capture_cell.json
+0665996927b87d279189dd6615072cd29f4ddc63 data\c\tags\entity_types\bosses.json
 c4160906a9efef85ea7d49d61ed21fb3e60aceaf data\portablemobs\advancements\captureadvancement.json
 5100700e8919a791b297bb6b070cbc67e659196c data\portablemobs\advancements\recipes\misc\basic_capture_cell.json
 bbaa41eabe8589b67f784c28a393b44833f42909 assets\portablemobs\lang\en_us.json
