@@ -11,7 +11,8 @@ public class PortableMobsTagGenerator extends TagGenerator {
 
     @Override
     public void generate() {
-        this.entityTag("forge","bosses").add(EntityType.ENDER_DRAGON).add(EntityType.WITHER);
-        this.entityTag("capture_blacklist").addReference("forge", "bosses");
+        this.entityTag("c","bosses").add(EntityType.ENDER_DRAGON).add(EntityType.WITHER);
+        this.entityTag("c", "teleporting_not_supported");
+        this.entityTag("capture_blacklist").addReference("c", "bosses").addReference("c", "teleporting_not_supported");
     }
 }
