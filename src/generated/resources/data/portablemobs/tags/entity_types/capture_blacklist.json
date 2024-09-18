@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:bosses"
+    "#c:bosses",
+    "#c:teleporting_not_supported"
   ]
 }
